@@ -1,0 +1,17 @@
+{
+  "name": "react-native-alipay",
+  "version": "0.1.5",
+  "description": "支付宝功能接入",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native",
+    "ios",
+    "android",
+    "alipay"
+  ],
+  "author": "tdzl2003",
+  "license": "ISC"
+}
