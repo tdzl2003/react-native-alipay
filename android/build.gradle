@@ -20,5 +20,5 @@ android {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    compile files('libs/alipaySdk-20160223.jar')
+    compile files('libs/alipaySdk-20160825.jar')
 }

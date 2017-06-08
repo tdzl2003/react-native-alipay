@@ -12,9 +12,10 @@
 
 static NSString *gAppSchema = @"";
 
-@implementation RCTAlipay {
-    RCTPromiseResolveBlock _resolve;
-}
+static RCTPromiseResolveBlock payResolveCallBack = NULL;
+static RCTPromiseRejectBlock payRejectCallBack = NULL;
+
+@implementation RCTAlipay
 
 RCT_EXPORT_MODULE(RCTAlipay);
 
@@ -33,8 +34,6 @@ RCT_EXPORT_MODULE(RCTAlipay);
 - (instancetype)init
 {
     self = [super init];
-    self->_resolve = nil;
-
     if (self) {
          [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleOpenURL:) name:@"RCTOpenURLNotification" object:nil];
     }
@@ -66,29 +65,31 @@ RCT_EXPORT_MODULE(RCTAlipay);
     if ([url.host isEqualToString:@"safepay"]) {
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             //【由于在跳转支付宝客户端支付的过程中，商户app在后台很可能被系统kill了，所以pay接口的callback就会失效，请商户对standbyCallback返回的回调结果进行处理,就是在这个方法里面处理跟callback一样的逻辑】
-            // 天地之灵补充：此时客户端界面逻辑已经不连贯，推荐由服务端在notifyUrl中处理支付。
-            if (self->_resolve) {
-                self->_resolve(resultDic);
-                self->_resolve = nil;
-            }
             NSLog(@"result = %@",resultDic);
+            if(payResolveCallBack!=NULL){
+                payResolveCallBack(resultDic);
+            }
         }];
     }
     if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回authCode
-
         [[AlipaySDK defaultService] processAuthResult:url standbyCallback:^(NSDictionary *resultDic) {
             //【由于在跳转支付宝客户端支付的过程中，商户app在后台很可能被系统kill了，所以pay接口的callback就会失效，请商户对standbyCallback返回的回调结果进行处理,就是在这个方法里面处理跟callback一样的逻辑】
-            // 天地之灵补充：此时客户端界面逻辑已经不连贯，推荐由服务端在notifyUrl中处理支付。
             NSLog(@"result = %@",resultDic);
+            
+            if(payResolveCallBack!=NULL){
+                payResolveCallBack(resultDic);
+            }
         }];
     }
+    
 }
 
 RCT_EXPORT_METHOD(pay:(NSString *)orderInfo showLoading:(BOOL)showLoading resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 {
-    self->_resolve = resolve;
+    payResolveCallBack = resolve;
+    payRejectCallBack = reject;
+    
     [[AlipaySDK defaultService] payOrder:orderInfo fromScheme:gAppSchema callback:^(NSDictionary *resultDic) {
-        self->_resolve = nil;
         resolve(resultDic);
     }];
 }
