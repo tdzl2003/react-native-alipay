@@ -116,8 +116,6 @@ function removeFrameworkAndSearchPath() {
             project.removeFromPbxFrameworksBuildPhase(file);      // PBXFrameworksBuildPhase
             //project.removeFromFrameworkSearchPaths(file);
             removeSearchPaths(project, '"$(SRCROOT)/../node_modules/@cross2d/react-native-alipay/ios/SDK"');
-
-            console.log(project, "--->project")
             fs.writeFileSync(projectPath, project.writeSync());
         }
     });
