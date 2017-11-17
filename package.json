@@ -1,10 +1,8 @@
 {
   "name": "@cross2d/react-native-alipay",
-  "author": "tdzl2003",
-  "dependencies": {},
-  "description": "支付宝功能接入",
-  "devDependencies": {},
-  "directories": {},
+  "version": "1.0.5",
+  "author": "colin3dmax",
+  "description": "支付宝功能接入SDK",
   "keywords": [
     "react-native",
     "ios",
@@ -12,6 +10,16 @@
     "alipay"
   ],
   "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "glob": "5.0.15",
+    "inquirer": "1.1.2",
+    "plist": "1.2.0",
+    "lodash": "4.17.2",
+    "xcode": "0.8.9",
+    "path": "0.12.7"
+  },
+  "directories": {},
   "main": "src/index.js",
   "maintainers": [
     "adin <phpgege@163.com>",
@@ -20,10 +28,30 @@
   ],
   "optionalDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "release":"npm publish --access public"
+    "release": "npm publish --access public"
   },
-  "version": "1.0.3",
+  "rnpm": {
+    "ios": {
+      "sharedLibraries": [
+        "libc++",
+        "libz",
+        "SystemConfiguration",
+        "CoreTelephony",
+        "QuartzCore",
+        "CoreText",
+        "CoreGraphics",
+        "UIKit",
+        "Foundation",
+        "CFNetwork",
+        "CoreMotion",
+        "AlipaySDK.framework"
+      ]
+    },
+    "commands": {
+      "postlink": "node node_modules/@cross2d/react-native-alipay/scripts/postlink/postlink",
+      "postunlink": "node node_modules/@cross2d/react-native-alipay/scripts/postunlink/postunlink"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/colin3dmax/react-native-alipay.git"
