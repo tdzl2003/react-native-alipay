@@ -24,9 +24,6 @@
             android:exported="false"
             android:screenOrientation="behind" >
         </activity>
-
-
-
     </application>
 
 </manifest>
